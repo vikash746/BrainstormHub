@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainstorm App - Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span style="font-size: 24px;">💡</span> Brainstorm
+      </div>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+        <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+      </ul>
+      <div class="user-profile">
+        <div class="avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="name" id="user-name">Loading...</div>
+          <div class="action" id="btn-logout">Logout</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <h2>Your Sessions</h2>
+        <button class="btn btn-primary" id="btn-create-session">+ New Session</button>
+      </div>
+
+      <div class="grid-container" id="sessions-container">
+        <!-- Sessions will be injected here via JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Create Session Modal -->
+  <div class="modal-overlay" id="session-modal">
+    <div class="modal-content glass-panel">
+      <div class="modal-header">
+        <h3>Create New Session</h3>
+        <button class="close-btn" id="close-session-modal">&times;</button>
+      </div>
+      <form id="form-session">
+        <input type="text" id="session-title" class="glass-input" placeholder="Session Title (e.g. Q3 Marketing)" required>
+        <textarea id="session-desc" class="glass-input" placeholder="Description (Optional)" rows="3"></textarea>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Session</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

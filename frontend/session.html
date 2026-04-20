@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainstorm App - Session</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span style="font-size: 24px;">💡</span> Brainstorm
+      </div>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analytics.html" class="nav-link">Analytics</a></li>
+        <li><a href="#" class="nav-link active" id="nav-session-title">Current Session</a></li>
+      </ul>
+      <div class="user-profile">
+        <div class="avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="name" id="user-name">Loading...</div>
+          <div class="action" id="btn-logout">Logout</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header">
+        <div>
+          <h2 id="session-header-title">Loading Session...</h2>
+          <p id="session-header-desc" style="color: var(--text-muted); margin-top: 8px;"></p>
+        </div>
+        <button class="btn btn-primary" id="btn-add-idea">+ Add Idea</button>
+      </div>
+
+      <div style="margin-bottom: 24px; display: flex; gap: 16px; align-items: center;">
+        <span style="color: var(--text-muted); font-size: 14px;">Filter by:</span>
+        <select id="category-filter" class="glass-input" style="width: 150px; margin-bottom: 0;">
+          <option value="All">All Categories</option>
+          <option value="Tech">Tech</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Product">Product</option>
+          <option value="Design">Design</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <span style="color: var(--text-muted); font-size: 14px; margin-left: 12px;">Sort by:</span>
+        <select id="sort-select" class="glass-input" style="width: 150px; margin-bottom: 0;">
+          <option value="voted">Most Voted</option>
+          <option value="newest">Newest</option>
+          <option value="trending">Trending</option>
+        </select>
+      </div>
+
+      <div class="grid-container" id="ideas-container">
+        <!-- Ideas will be injected here via JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Idea Modal -->
+  <div class="modal-overlay" id="idea-modal">
+    <div class="modal-content glass-panel">
+      <div class="modal-header">
+        <h3>Add New Idea</h3>
+        <button class="close-btn" id="close-idea-modal">&times;</button>
+      </div>
+      <form id="form-idea" enctype="multipart/form-data">
+        <input type="text" id="idea-title" class="glass-input" placeholder="Idea Title" required>
+        
+        <input type="text" id="idea-tags" class="glass-input" placeholder="Tags (e.g. #AI, #Mobile), comma separated">
+
+        <div class="editor-toolbar">
+          <button type="button" class="editor-btn" onclick="formatDoc('bold')"><b>B</b></button>
+          <button type="button" class="editor-btn" onclick="formatDoc('italic')"><i>I</i></button>
+          <button type="button" class="editor-btn" onclick="formatDoc('insertUnorderedList')">• List</button>
+          <button type="button" class="editor-btn" onclick="addLink()">Link</button>
+        </div>
+        <div id="idea-desc" class="editor-content" contenteditable="true" data-placeholder="Description"></div>
+        
+        <label style="font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 8px;">Attachments (Images/Docs)</label>
+        <input type="file" id="idea-attachments" class="glass-input" multiple accept="image/*,.pdf,.doc,.docx">
+
+        <select id="idea-category" class="glass-input" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="Tech">Tech</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Product">Product</option>
+          <option value="Design">Design</option>
+          <option value="Other">Other</option>
+        </select>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Idea</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/session.js"></script>
+</body>
+</html>

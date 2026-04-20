@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainstorm App - Analytics</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/charts.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span style="font-size: 24px;">💡</span> Brainstorm
+      </div>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="analytics.html" class="nav-link active">Analytics</a></li>
+      </ul>
+      <div class="user-profile">
+        <div class="avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="name" id="user-name">Loading...</div>
+          <div class="action" id="btn-logout">Logout</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="header">
+        <h2>Analytics Dashboard</h2>
+        <div class="badge" style="font-size: 16px; padding: 8px 16px;">
+          Total Platform Votes: <span id="stat-total-votes">0</span>
+        </div>
+      </div>
+
+      <div class="grid-container">
+        <!-- Most Active Users -->
+        <div class="chart-container" style="margin-top: 0;">
+          <div class="chart-title">Most Active Users</div>
+          <div class="activity-list" id="active-users-list">
+            Loading...
+          </div>
+        </div>
+        
+        <!-- Category Popularity Bar Chart -->
+        <div class="chart-container" style="margin-top: 0;">
+          <div class="chart-title">Category Popularity</div>
+          <div class="bar-chart" id="category-chart">
+            Loading...
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Ideas -->
+      <div class="chart-container">
+        <div class="chart-title">Top Ideas (Highest Votes)</div>
+        <div class="grid-container" id="top-ideas-grid">
+          Loading...
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
