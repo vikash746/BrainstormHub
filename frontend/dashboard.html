@@ -50,6 +50,16 @@
       <form id="form-session">
         <input type="text" id="session-title" class="glass-input" placeholder="Session Title (e.g. Q3 Marketing)" required>
         <textarea id="session-desc" class="glass-input" placeholder="Description (Optional)" rows="3"></textarea>
+        
+        <select id="session-category" class="glass-input" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="Brainstorming">Brainstorming</option>
+          <option value="Strategy">Strategy</option>
+          <option value="Planning">Planning</option>
+          <option value="Feedback">Feedback</option>
+          <option value="Other">Other</option>
+        </select>
+        
         <button type="submit" class="btn btn-primary" style="width: 100%;">Create Session</button>
       </form>
     </div>

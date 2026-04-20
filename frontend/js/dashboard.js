@@ -12,12 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const title = document.getElementById('session-title').value;
     const description = document.getElementById('session-desc').value;
+    const category = document.getElementById('session-category').value;
 
     try {
       const res = await fetch(`${API_URL}/sessions`, {
         method: 'POST',
         headers: getHeaders(),
-        body: JSON.stringify({ title, description })
+        body: JSON.stringify({ title, description, category })
       });
       if (res.ok) {
         modal.classList.remove('active');
@@ -55,7 +56,10 @@ async function fetchSessions() {
       
       const date = new Date(session.date).toLocaleDateString();
       card.innerHTML = `
-        <div class="card-title">${session.title}</div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div class="card-title">${session.title}</div>
+          <span class="badge">${session.category || 'General'}</span>
+        </div>
         <div class="card-desc">${session.description || 'No description provided.'}</div>
         <div class="card-footer">
           <span>By: ${session.createdBy.name}</span>

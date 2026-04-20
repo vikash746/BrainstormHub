@@ -6,9 +6,9 @@ const router = express.Router();
 
 // Create session
 router.post('/', authMiddleware, async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, category } = req.body;
   try {
-    const session = new Session({ title, description, createdBy: req.user.id });
+    const session = new Session({ title, description, category: category || 'General', createdBy: req.user.id });
     await session.save();
     res.status(201).json(session);
   } catch (error) {
