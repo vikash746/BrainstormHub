@@ -3,7 +3,6 @@ const http = require('http');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const { Server } = require('socket.io');
 
 const authRoutes = require('./routes/authRoutes');
 const sessionRoutes = require('./routes/sessionRoutes');
@@ -12,23 +11,16 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: '*', // Allow frontend connects
-    methods: ['GET', 'POST']
-  }
-});
 
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Make socket.io accessible in routes
-app.set('io', io);
+// Websockets removed for Vercel compatibility
 
 // Database connection
-mongoose.connect('mongodb://127.0.0.1:27017/brainstorming_dev')
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/brainstorming_dev';
+mongoose.connect(MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -39,25 +31,13 @@ app.use('/api/ideas', ideaRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/comments', commentRoutes);
 
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+// Removed io.on('connection') for Vercel
 
-  socket.on('join-session', (sessionId) => {
-    socket.join(sessionId);
-    console.log(`Socket ${socket.id} joined session ${sessionId}`);
+const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
   });
+}
 
-  socket.on('leave-session', (sessionId) => {
-    socket.leave(sessionId);
-    console.log(`Socket ${socket.id} left session ${sessionId}`);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
-
-const PORT = 5000;
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;

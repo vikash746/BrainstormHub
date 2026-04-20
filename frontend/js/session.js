@@ -3,7 +3,6 @@ const sessionId = urlParams.get('id');
 
 if (!sessionId) window.location.href = 'dashboard.html';
 
-const socket = io('http://localhost:5000');
 let ideasData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -11,32 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await fetchSessionDetails();
   await fetchIdeas();
 
-  socket.emit('join-session', sessionId);
-  
-  socket.on('new-idea', (idea) => {
-    ideasData.push(idea);
-    renderIdeas();
-  });
-
-  socket.on('vote-update', ({ ideaId, votes }) => {
-    const ideaInfo = ideasData.find(i => i._id === ideaId);
-    if (ideaInfo) {
-      ideaInfo.votes = votes;
-      renderIdeas();
-    }
-  });
-
-  socket.on('new-comment', (comment) => {
-    // If the comment section is open, append it
-    const commentsList = document.getElementById(`comments-list-${comment.ideaId}`);
-    if (commentsList) {
-      commentsList.insertAdjacentHTML('beforeend', createCommentHTML(comment));
-    }
-  });
-
-  socket.on('notification', (notif) => {
-    alert(`Notification: ${notif.message}`); // Basic notification
-  });
+  // Socket code removed for Vercel
 
   // Modal
   const modal = document.getElementById('idea-modal');
@@ -79,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         modal.classList.remove('active');
         document.getElementById('form-idea').reset();
         document.getElementById('idea-desc').innerHTML = '';
+        fetchIdeas(); // Refetch ideas manually
       } else {
         const data = await res.json();
         alert(data.error);
@@ -213,7 +188,11 @@ async function voteIdea(ideaId, e) {
     if (!res.ok) alert(data.error);
     else {
         const idea = ideasData.find(i => i._id === ideaId);
-        if (idea) idea.voters.push(JSON.parse(localStorage.getItem('user')).id);
+        if (idea) {
+            idea.voters.push(JSON.parse(localStorage.getItem('user')).id);
+            idea.votes = data.votes;
+            renderIdeas();
+        }
     }
   } catch (err) { console.error(err); }
 }
@@ -268,7 +247,11 @@ async function postComment(ideaId) {
     });
     if (res.ok) {
       input.value = '';
-      // Event handling does append automatically via socket, but if not we can manually fetch
+      const comment = await res.json();
+      const commentsList = document.getElementById(`comments-list-${comment.ideaId}`);
+      if (commentsList) {
+        commentsList.insertAdjacentHTML('beforeend', createCommentHTML(comment));
+      }
     }
   } catch(err) { console.error(err); }
 }

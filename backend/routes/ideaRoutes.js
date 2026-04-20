@@ -44,7 +44,7 @@ router.post('/session/:sessionId', authMiddleware, upload.array('attachments', 3
       attachments
     });
     await idea.save();
-    req.app.get('io').to(req.params.sessionId).emit('new-idea', idea);
+    // Removed req.app.get('io').to(...).emit('new-idea', idea);
     res.status(201).json(idea);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
@@ -61,7 +61,7 @@ router.post('/:ideaId/vote', authMiddleware, async (req, res) => {
     idea.voters.push(req.user.id);
     idea.votes += 1;
     await idea.save();
-    req.app.get('io').to(idea.sessionId.toString()).emit('vote-update', { ideaId: idea._id, votes: idea.votes });
+    // Removed vote-update emit
     res.json(idea);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
@@ -74,7 +74,7 @@ router.put('/:ideaId/status', authMiddleware, async (req, res) => {
   const { status } = req.body;
   try {
     const idea = await Idea.findByIdAndUpdate(req.params.ideaId, { status }, { new: true });
-    req.app.get('io').to(idea.sessionId.toString()).emit('status-update', idea);
+    // Removed status-update emit
     res.json(idea);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });

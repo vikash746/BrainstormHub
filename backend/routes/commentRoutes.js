@@ -41,12 +41,12 @@ router.post('/idea/:ideaId', authMiddleware, async (req, res) => {
           });
           await notif.save();
           // Emit via socket
-          req.app.get('io').to(`user-${mentionedUser._id}`).emit('notification', notif);
+          // Removed req.app.get('io').to(...).emit('notification', notif);
         }
       }
     }
 
-    req.app.get('io').to(req.params.ideaId).emit('new-comment', comment);
+    // Removed req.app.get('io').to(...).emit('new-comment', comment);
 
     res.status(201).json(comment);
   } catch (err) {
