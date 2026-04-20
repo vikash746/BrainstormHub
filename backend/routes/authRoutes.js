@@ -23,7 +23,8 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error("Register Error:", error);
+    res.status(500).json({ error: error.message || 'Server error' });
   }
 });
 
@@ -44,7 +45,8 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user._id, name: user.name, role: user.role }, process.env.JWT_SECRET || 'secret', { expiresIn: '1d' });
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error("Login Error:", error);
+    res.status(500).json({ error: error.message || 'Server error' });
   }
 });
 
